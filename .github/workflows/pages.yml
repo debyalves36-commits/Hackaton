@@ -1,0 +1,80 @@
+name: Publicar site no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Identificar configuração atual do Pages
+        id: site
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: site } = await github.request('GET /repos/{owner}/{repo}/pages', {
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            core.setOutput('mode', site.build_type);
+            core.setOutput('url', site.html_url);
+            if (site.build_type !== 'workflow' && (site.source?.branch !== 'main' || site.source?.path !== '/')) {
+              core.setFailed('A publicação por branch deve usar main / (root), ou selecione GitHub Actions em Settings > Pages.');
+            }
+      - name: Atualizar build na raiz para Pages por branch
+        if: steps.site.outputs.mode != 'workflow'
+        run: |
+          npm run publish:static
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html assets logo.svg products .nojekyll
+          if ! git diff --cached --quiet; then
+            git commit -m "Atualiza build publico do site [skip ci]"
+            git push origin HEAD:main
+          fi
+      - name: Solicitar publicação do Pages por branch
+        if: steps.site.outputs.mode != 'workflow'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              await github.request('POST /repos/{owner}/{repo}/pages/builds', {
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+            } catch (error) {
+              if (error.status === 409) core.info('Já existe um build do Pages em andamento; aguardando a verificação pública.');
+              else throw error;
+            }
+      - name: Enviar build pronto
+        if: steps.site.outputs.mode == 'workflow'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+      - name: Publicar site
+        if: steps.site.outputs.mode == 'workflow'
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Validar endereço público e arquivos
+        env:
+          SITE_URL: ${{ steps.site.outputs.url }}
+        run: node scripts/verify-publication.mjs
