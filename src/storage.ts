@@ -1,13 +1,15 @@
 import { seedData } from "./data";
 import type { Data } from "./types";
-const KEY = "ac-data-v1";
+const KEY = "ac-data-v2";
+const OLD_KEY = "ac-data-v1";
 export function loadData(): { data: Data; error: string } {
   try {
+    if (localStorage.getItem(OLD_KEY)) localStorage.removeItem(OLD_KEY);
     const raw = localStorage.getItem(KEY);
     if (!raw) return { data: seedData(), error: "" };
     const data = JSON.parse(raw);
     if (
-      data.version !== 1 ||
+      data.version !== 2 ||
       !["clients", "orders", "visits", "issues", "events"].every((k) =>
         Array.isArray(data[k]),
       ) ||

@@ -101,6 +101,10 @@ describe("Definições comerciais", () => {
       }),
     ).toBe(true);
     expect(products.length).toBeGreaterThanOrEqual(12);
+    expect(new Set(products.map((p) => p.category))).toEqual(
+      new Set(["Frango", "Suínos"]),
+    );
+    expect(products.every((p) => /chicken|pork/.test(p.image))).toBe(true);
     expect(d.orders.every((o) => o.placedAt <= "2026-10-23")).toBe(true);
     for (const c of d.clients) {
       const orders = d.orders.filter((o) => o.clientId === c.id);

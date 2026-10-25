@@ -658,7 +658,7 @@ export default function App() {
           <a className="brand" href="#">
             <img src="./logo.svg" alt="Logo AC" />
             <span>
-              Analise de Carreira<small>INTELIGÊNCIA COMERCIAL</small>
+              Analise de Carreira<small>ROTA IN NATURA · SEARA</small>
             </span>
           </a>
           <div className="login-copy">
@@ -675,7 +675,7 @@ export default function App() {
               </em>
             </h1>
             <p>
-              Transforme o histórico dos seus clientes em oportunidades reais
+              Transforme o histórico da rota de frango e suíno em oportunidades
               para a sua próxima visita.
             </p>
             <div className="login-illustration">
@@ -775,7 +775,7 @@ export default function App() {
         >
           <img src="./logo.svg" alt="Logo AC" />
           <span>
-            Analise de Carreira<small>INTELIGÊNCIA COMERCIAL</small>
+            Analise de Carreira<small>ROTA IN NATURA · SEARA</small>
           </span>
         </button>
         <div className="workspace-label">ESPAÇO COMERCIAL</div>
@@ -1494,9 +1494,10 @@ export default function App() {
             <div className="about-content">
               <Badge tone="aqua">Protótipo acadêmico</Badge>
               <p>
-                Analise de Carreira ajuda vendedores de rota a entender clientes
-                e oportunidades. Todos os estabelecimentos, pedidos e entregas
-                são fictícios.
+                Analise de Carreira ajuda vendedores da rota in natura de frango
+                e suíno a entender clientes e oportunidades. O catálogo é
+                demonstrativo e não representa a lista oficial da Seara.
+                Estabelecimentos, pedidos e entregas são fictícios.
               </p>
               <h3>Como interpretar seus indicadores</h3>
               <p>
@@ -1846,8 +1847,8 @@ export default function App() {
               <div>
                 <h2>Os produtos contam a história</h2>
                 <p>
-                  Imagens ilustrativas · quantidades derivadas dos pedidos
-                  válidos.
+                  Cortes de frango e suíno · imagens ilustrativas · quantidades
+                  derivadas dos pedidos válidos.
                 </p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 # Analise de Carreira · AC
 
-Assistente comercial para vendedores de rota, criado para um hackathon de varejo. Reúne a carteira de clientes, o histórico de compras e oportunidades práticas de venda em uma interface que funciona no celular e no desktop.
+Assistente comercial para vendedores da rota in natura Seara, com foco em frango e suíno. Reúne a carteira de clientes, o histórico de compras e oportunidades práticas de venda em uma interface que funciona no celular e no desktop.
 
 **Perfil principal: Victoria Adorno, com exatamente 12 clientes fictícios.** Rafael Oliveira possui uma carteira independente de três clientes. O logo AC e as ilustrações dos produtos foram desenhados em SVG para este projeto, sem fotografias comerciais ou marcas externas.
 
@@ -12,7 +12,7 @@ O projeto suporta as duas fontes do Pages: **GitHub Actions** ou a configuraçã
 
 O workflow `.github/workflows/pages.yml` identifica a fonte configurada, executa os testes e o build e publica a versão compilada. Para GitHub Actions, envia `dist/` pelas ações oficiais. Para `main / (root)`, atualiza os arquivos estáticos da raiz e solicita um build do Pages pela API. Depois verifica o endereço público, o JavaScript da versão atual, o logo e uma imagem de produto. Se necessário, execute-o manualmente em **Actions → Publicar site no GitHub Pages → Run workflow**.
 
-O HTML de desenvolvimento fica em `src/index.template.html`. O Vite usa esse template ao executar ou compilar o projeto; a cópia compilada de `index.html` na raiz não interfere no desenvolvimento ou no HMR. Não edite os bundles gerados. Para atualizar manualmente a publicação por branch antes de enviar ao GitHub, execute `npm run build` e `npm run publish:static`. O segundo comando copia apenas as saídas do build, preservando o código-fonte e os arquivos de versões anteriores que ainda podem estar em cache.
+O HTML de desenvolvimento fica em `src/index.template.html`. O Vite usa esse template ao executar ou compilar o projeto; a cópia compilada de `index.html` na raiz não interfere no desenvolvimento ou no HMR. Não edite os bundles gerados. Para atualizar manualmente a publicação por branch antes de enviar ao GitHub, execute `npm run build` e `npm run publish:static`. O segundo comando substitui as saídas do build e remove imagens e bundles obsoletos do catálogo anterior.
 
 Os caminhos do build, do logo e dos produtos são relativos para funcionar também dentro de `/Hackaton/`, sem arquivos ausentes na hospedagem.
 
@@ -42,7 +42,7 @@ Os testes de navegador usam `/usr/bin/chromium` quando disponível. Em outras m�
 - Carteira com pesquisa por estabelecimento, bairro, cidade ou segmento, filtros comerciais, ordenação e exportação CSV.
 - Análise individual com seleção de mês e ano, volume, IPC, recordes históricos, atingimento do bench e comparação anual.
 - Gráficos de volume e IPC calculados diretamente dos pedidos; meses futuros não são apresentados como vendas realizadas.
-- Catálogo com 15 produtos e ilustrações locais; quantidades mensais/anuais, última compra, comparação com o mês anterior, categorias e ordenação dos mais vendidos.
+- Catálogo fictício com 15 cortes in natura de frango e suíno e ilustrações locais; quantidades mensais/anuais, última compra, comparação com o mês anterior, categorias e ordenação dos mais vendidos.
 - Recomendações locais de recuperação de mix, produtos ainda não comprados, distância do bench e volume abaixo da média recente.
 - Agendamento de visitas, prevenção de conflitos em uma janela de 30 minutos, check-in/check-out em tempo real, resultado, observações e duração calculada.
 - Registro de pedidos com múltiplos SKUs, validação de quantidades inteiras, prevenção de linhas duplicadas, acompanhamento de entrega e cancelamento.
@@ -50,6 +50,8 @@ Os testes de navegador usam `/usr/bin/chromium` quando disponível. Em outras m�
 - Desempenho geral, ranking por volume, IPC, crescimento ou distância do bench.
 - Gamificação demonstrativa, histórico, níveis, conquistas e recompensas recalculadas.
 - Persistência em localStorage, alerta em caso de armazenamento indisponível/corrompido e restauração da base pelo menu do perfil.
+
+A troca do catálogo para cortes in natura reinicia a base demonstrativa salva anteriormente neste navegador, pois os códigos dos produtos passaram a representar cortes diferentes.
 
 ## Regras comerciais
 
@@ -73,7 +75,7 @@ As definições são centralizadas em `src/domain.ts`. Indicadores são derivado
 
 O histórico demonstrativo tem data-base **23 de outubro de 2026**, com compras determinísticas de 2025 e de janeiro a outubro de 2026. Não há vendas fictícias de novembro ou dezembro de 2026. Outubro é parcial; suas variações precisam ser contextualizadas. A comparação de 2026 e 2025 considera janeiro a outubro de ambos, sem confundir dez meses com doze. A seleção de 2025 mostra doze meses e deixa explícita a ausência de base de 2024.
 
-Os dados incluem clientes em crescimento, clientes em queda, dois clientes da carteira principal sem compra recente, redução do mix, um recorde mensal em outubro, entregas pendentes, ocorrência de pós-venda e visitas realizadas/agendadas. O catálogo não representa estoque disponível ou recomendação de preço. As oportunidades são hipóteses para uma conversa com o cliente, sem previsão garantida.
+Os dados incluem clientes em crescimento, clientes em queda, dois clientes da carteira principal sem compra recente, redução do mix, um recorde mensal em outubro, entregas pendentes, ocorrência de pós-venda e visitas realizadas/agendadas. Os produtos e SKUs são demonstrativos; o catálogo não representa a lista oficial da Seara, estoque disponível ou recomendação de preço. As oportunidades são hipóteses para uma conversa com o cliente, sem previsão garantida.
 
 Novos pedidos usam a data real do navegador. O seletor acompanha esse mês no cenário de demonstração de outubro de 2026; a base e os seletores anuais são limitados a 2025/2026. Para usar o protótipo em outro ano, atualize o calendário demonstrativo em uma tarefa de desenvolvimento.
 
@@ -106,7 +108,7 @@ A identidade utiliza as cores do briefing: lavanda `#C1D0F5`, azul claro `#68B1D
 4. Em **Produtos e mix**, consulte quantidades, categorias, itens ausentes e a evolução do IPC.
 5. Em **Oportunidades**, use a sugestão baseada no histórico para planejar a abordagem.
 6. Na aba **Operação**, inicie uma visita, consulte a análise, registre as observações e finalize. A duração usa os horários reais.
-7. Registre um pedido com um produto novo, como Quibe congelado; mostre a atualização dos indicadores.
+7. Registre um pedido com um produto novo, como Barriga suína; mostre a atualização dos indicadores.
 8. Confirme a entrega e consulte o desempenho/XP. Cancele o pedido para demonstrar o recálculo sem duplicação.
 9. Abra **Supermercado Bela Vista** para mostrar um bench alcançado no mês da demonstração.
 10. Troque para **Rafael Oliveira** para demonstrar outra carteira. Restaure a base fictícia pelo menu do perfil quando desejar reiniciar a apresentação.

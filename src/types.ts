@@ -77,7 +77,7 @@ export interface GamificationEvent {
   createdAt: string;
 }
 export interface Data {
-  version: 1;
+  version: 2;
   clients: Client[];
   orders: Order[];
   visits: Visit[];

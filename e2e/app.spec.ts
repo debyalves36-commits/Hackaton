@@ -52,7 +52,9 @@ test("login, isolamento, pesquisa, filtros, análise, produtos, persistência e 
       .evaluate((img: HTMLImageElement) => img.naturalWidth),
   ).toBeGreaterThan(0);
   await page.getByLabel("Categoria de produtos").selectOption("Frango");
-  await expect(page.locator(".product-card")).toHaveCount(3);
+  await expect(page.locator(".product-card")).toHaveCount(8);
+  await page.getByLabel("Categoria de produtos").selectOption("Suínos");
+  await expect(page.locator(".product-card")).toHaveCount(7);
   await page.getByRole("tab", { name: "Oportunidades" }).click();
   await expect(page.locator(".opportunity").first()).toBeVisible();
   await page.getByLabel("Menu do perfil").click();
@@ -150,7 +152,7 @@ test("visita tem check-in, duração real e conclusão persistida; XP de consult
   await page.getByRole("button", { name: "Voltar à carteira" }).click();
   await openFirst(page);
   const storage = await page.evaluate(() =>
-    JSON.parse(localStorage.getItem("ac-data-v1")!),
+    JSON.parse(localStorage.getItem("ac-data-v2")!),
   );
   expect(
     storage.events.filter((e: any) => e.type === "Análise de cliente"),
@@ -220,13 +222,13 @@ test("exportação CSV e agendamento validam horário e conflitos", async ({
   await page.getByLabel("Data e horário").fill("2026-10-27T10:00");
   await page
     .getByLabel("Observações", { exact: true })
-    .fill("Apresentar novo catálogo de congelados.");
+    .fill("Apresentar novos cortes de frango e suíno.");
   await page
     .getByRole("dialog")
     .getByRole("button", { name: "Agendar visita", exact: true })
     .click();
   await expect(page.locator(".visit-list")).toContainText(
-    "Apresentar novo catálogo",
+    "Apresentar novos cortes",
   );
   await page
     .getByRole("button", { name: "Agendar visita", exact: true })
@@ -244,7 +246,7 @@ test("armazenamento corrompido mostra recuperação e restauração volta a pers
   page,
 }) => {
   await page.goto("/");
-  await page.evaluate(() => localStorage.setItem("ac-data-v1", "{invalid"));
+  await page.evaluate(() => localStorage.setItem("ac-data-v2", "{invalid"));
   await page.reload();
   await page.getByRole("button", { name: "Entrar na minha carteira" }).click();
   await expect(page.getByRole("alert")).toContainText("não puderam ser lidos");
@@ -258,7 +260,20 @@ test("armazenamento corrompido mostra recuperação e restauração volta a pers
   await openFirst(page);
   await page.reload();
   const data = await page.evaluate(() =>
-    JSON.parse(localStorage.getItem("ac-data-v1")!),
+    JSON.parse(localStorage.getItem("ac-data-v2")!),
   );
   expect(data.events).toHaveLength(1);
+});
+test("base antiga é descartada quando o catálogo muda", async ({ page }) => {
+  await page.goto("/");
+  await page.evaluate(() => localStorage.setItem("ac-data-v1", JSON.stringify({ version: 1, orders: [{ items: [{ productId: "p1", boxes: 4 }] }] })));
+  await page.reload();
+  await page.getByRole("button", { name: "Entrar na minha carteira" }).click();
+  await expect(page.locator(".client-card")).toHaveCount(12);
+  const storage = await page.evaluate(() => ({
+    old: localStorage.getItem("ac-data-v1"),
+    current: JSON.parse(localStorage.getItem("ac-data-v2")!),
+  }));
+  expect(storage.old).toBeNull();
+  expect(storage.current.version).toBe(2);
 });

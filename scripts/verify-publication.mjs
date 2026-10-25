@@ -14,7 +14,7 @@ for (let attempt = 0; attempt < 12; attempt++) {
     if (!response.ok || !html.includes(script) || html.includes("/src/main.tsx")) {
       throw new Error(`O site ainda não serve este build (HTTP ${response.status}).`);
     }
-    for (const path of [script, "./logo.svg", "./products/burger.svg"]) {
+    for (const path of [script, "./logo.svg", "./products/chicken.svg", "./products/pork.svg"]) {
       const asset = await fetch(new URL(path, url), { signal: AbortSignal.timeout(15000) });
       if (!asset.ok) throw new Error(`Arquivo publicado indisponível: ${path}, HTTP ${asset.status}`);
       const body = await asset.text();

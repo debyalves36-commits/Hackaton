@@ -15,21 +15,21 @@ export const sellers: Seller[] = [
   },
 ];
 export const products: Product[] = [
-  ["Hambúrguer tradicional", "Hambúrgueres", "burger"],
+  ["Frango inteiro", "Frango", "chicken"],
   ["Peito de frango", "Frango", "chicken"],
-  ["Linguiça toscana", "Linguiças", "sausage"],
-  ["Almôndegas bovinas", "Congelados", "meatballs"],
-  ["Patinho em cubos", "Carnes bovinas", "beef"],
-  ["Filé de frango", "Frango", "chicken"],
-  ["Hambúrguer artesanal", "Hambúrgueres", "burger"],
-  ["Linguiça de frango", "Linguiças", "sausage"],
-  ["Carne moída", "Carnes bovinas", "beef"],
-  ["Nuggets de frango", "Processados", "nuggets"],
-  ["Coxinha congelada", "Congelados", "nuggets"],
-  ["Costela bovina", "Carnes bovinas", "beef"],
-  ["Salsicha tradicional", "Processados", "sausage"],
-  ["Sobrecoxa de frango", "Frango", "chicken"],
-  ["Quibe congelado", "Congelados", "meatballs"],
+  ["Lombo suíno", "Suínos", "pork"],
+  ["Coxa de frango", "Frango", "chicken-leg"],
+  ["Pernil suíno", "Suínos", "pork"],
+  ["Filé de peito de frango", "Frango", "chicken"],
+  ["Costela suína", "Suínos", "pork-ribs"],
+  ["Asa de frango", "Frango", "chicken-wing"],
+  ["Bisteca suína", "Suínos", "pork"],
+  ["Coxinha da asa de frango", "Frango", "chicken-wing"],
+  ["Copa lombo suíno", "Suínos", "pork"],
+  ["Paleta suína", "Suínos", "pork"],
+  ["Sassami de frango", "Frango", "chicken"],
+  ["Sobrecoxa de frango", "Frango", "chicken-leg"],
+  ["Barriga suína", "Suínos", "pork-ribs"],
 ].map(([name, category, illustration], i) => ({
   id: `p${i + 1}`,
   sku: `AC-${String(i + 1).padStart(3, "0")}`,
@@ -140,7 +140,7 @@ export function seedData(): Data {
       }
   });
   return {
-    version: 1,
+    version: 2,
     clients,
     orders,
     visits: [
@@ -153,7 +153,7 @@ export function seedData(): Data {
         checkOutAt: "2026-10-22T09:31:00",
         status: "Concluída",
         result: "Apresentação de mix",
-        notes: "Cliente demonstrou interesse em congelados.",
+        notes: "Cliente demonstrou interesse em cortes de frango e suíno.",
       },
       {
         id: "visit-next",
